@@ -1,5 +1,7 @@
 .idea
 
-gradle*
+!gradle.properties
+gradle
+gradlew*
 .gradle
 build
