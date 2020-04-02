@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'java-gradle-plugin'
+    id 'maven-publish' // used to publish to maven local
+}
+
+group 'dev.dengchao'
+version "$VERSION"
+
+repositories {
+    mavenLocal()
+    maven { url "https://maven.aliyun.com/repository/central" }
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation group: 'junit', name: 'junit', version: '4.13'
+
+    compileOnly "org.projectlombok:lombok:1.16.16"
+    annotationProcessor "org.projectlombok:lombok:1.16.16"
+
+}
+
+// https://docs.gradle.org/current/userguide/publishing_maven.html
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'dev.dengchao'
+            artifactId = 'fc-custom-runtime-packer'
+            version = "$VERSION"
+            from components.java
+        }
+    }
+}
