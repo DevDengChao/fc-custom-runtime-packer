@@ -1,6 +1,7 @@
 package dev.dengchao.validator;
 
-import lombok.extern.slf4j.Slf4j;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -10,8 +11,8 @@ import java.util.List;
 /**
  * Validate the first line's content equals to known values.
  */
-@Slf4j
 public class FirstLineValidator implements SmartValidator {
+    private static final Logger log = Logging.getLogger(FirstLineValidator.class);
     /**
      * Accepted values
      */
