@@ -25,7 +25,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
     implementation group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
 
-//    Imcompatible with java-gradle-plugin
+//    Incompatible with java-gradle-plugin
 //    compileOnly "org.projectlombok:lombok:1.16.16"
 //    annotationProcessor "org.projectlombok:lombok:1.16.16"
 
