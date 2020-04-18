@@ -28,7 +28,9 @@ public class FirstLineValidatorTest {
         String content = "#!/bin/bash\n" +
                 "\n" +
                 "java -jar hello-world.jar";
-        new FileWriter(file).write(content);
+        FileWriter writer = new FileWriter(file);
+        writer.write(content);
+        writer.flush();
         assertTrue(validator.test(file));
     }
 
@@ -37,7 +39,9 @@ public class FirstLineValidatorTest {
         String content = "#!/usr/bin/env sh\n" +
                 "\n" +
                 "java -jar hello-world.jar";
-        new FileWriter(file).write(content);
+        FileWriter writer = new FileWriter(file);
+        writer.write(content);
+        writer.flush();
         assertTrue(validator.test(file));
     }
 
@@ -46,7 +50,9 @@ public class FirstLineValidatorTest {
         String content = "\n" +
                 "\n" +
                 "java -jar hello-world.jar";
-        new FileWriter(file).write(content);
+        FileWriter writer = new FileWriter(file);
+        writer.write(content);
+        writer.flush();
         assertFalse(validator.test(file));
 
         // fixing missed header

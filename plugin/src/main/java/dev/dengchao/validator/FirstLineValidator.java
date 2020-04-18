@@ -12,7 +12,7 @@ import java.util.List;
  * Validate the first line's content equals to known values.
  */
 public class FirstLineValidator implements SmartValidator {
-    private static final Logger log = Logging.getLogger(FirstLineValidator.class);
+    private static final Logger logger = Logging.getLogger(FirstLineValidator.class);
     /**
      * Accepted values
      */
@@ -26,12 +26,25 @@ public class FirstLineValidator implements SmartValidator {
             String line = reader.readLine();
             reader.close();
             if (line == null) {
+                logger.warn("End of file when reading the first line from file {}", file);
                 return false;
             }
             line = line.trim();
-            return !line.isEmpty() && accepts.contains(line);
+            if (line.isEmpty()) {
+                logger.warn("No content when reading the first line from file {}", file);
+                return false;
+            }
+
+            for (String accept : accepts) {
+                if (line.startsWith(accept)) {
+                    return true;
+                }
+            }
+
+            logger.warn("Unacceptable first line [{}] found at file {}", line, file);
+            return false;
         } catch (IOException e) {
-            log.warn("Unable to read the first line form {}", file, e);
+            logger.warn("Unable to read the first line form file {}", file, e);
             return false;
         }
     }
@@ -40,14 +53,14 @@ public class FirstLineValidator implements SmartValidator {
     public boolean fix(@NotNull File file) {
         // fix the bootstrap file by simply adding a header
         try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(file, "w");
+            RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
             randomAccessFile.seek(0);
             randomAccessFile.writeUTF(accepts.get(0));
             randomAccessFile.writeUTF("\n");
             randomAccessFile.close();
             return true;
         } catch (IOException e) {
-            log.warn("Unable to fix {}", file, e);
+            logger.warn("Unable to fix {}", file, e);
             return false;
         }
     }
