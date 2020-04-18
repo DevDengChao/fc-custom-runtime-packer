@@ -1,21 +1,23 @@
 package dev.dengchao.validator;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class FirstLineValidatorTest {
 
     private SmartValidator validator;
     private File file;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         file = File.createTempFile("bootstrap", "");
         validator = new FirstLineValidator();

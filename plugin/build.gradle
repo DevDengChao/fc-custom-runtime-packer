@@ -19,7 +19,8 @@ java {
 }
 
 dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.13'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
+    testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
 
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
     implementation group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
@@ -35,6 +36,7 @@ test {
 }
 
 gradlePlugin {
+    //noinspection GroovyAssignabilityCheck
     plugins {
         greetingsPlugin {
             //noinspection GroovyAssignabilityCheck

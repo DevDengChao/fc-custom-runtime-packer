@@ -1,16 +1,18 @@
 package dev.dengchao.validator;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ExecutionValidatorTest {
+
+class ExecutionValidatorTest {
 
     @Test
-    public void test() throws Exception {
+    void test() throws Exception {
         File file = File.createTempFile("bootstrap", "");
         file.deleteOnExit();
 
