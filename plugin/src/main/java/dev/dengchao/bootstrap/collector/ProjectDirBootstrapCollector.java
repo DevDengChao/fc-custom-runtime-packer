@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * <li> Bootstrap file's name MAY end with '.sh'. </li>
  * </ul>
  */
-public class ProjectDirBootstrapCollector extends AbstractBootstrapCollector {
+class ProjectDirBootstrapCollector extends AbstractBootstrapCollector {
 
     @Override
     protected @NotNull String filterPattern() {
