@@ -1,11 +1,9 @@
 package dev.dengchao.validator;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,15 +15,20 @@ public class FirstLineValidator implements Validator {
     /**
      * Accepted values
      */
+    @NotNull
     private final List<String> accepts = Arrays.asList("#!/bin/bash", "#!/usr/bin/env sh");
 
     @Override
-    public boolean test(File file) {
+    public boolean test(@NotNull File file) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
             reader.close();
-            return accepts.contains(line);
+            if (line == null) {
+                return false;
+            }
+            line = line.trim();
+            return !line.isEmpty() && accepts.contains(line);
         } catch (IOException e) {
             log.warn("Unable to read the first line form {}", file, e);
             return false;
