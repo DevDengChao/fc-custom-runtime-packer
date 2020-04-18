@@ -10,6 +10,8 @@ import java.util.Map;
  */
 public interface BootstrapCollector {
 
+    String DEFAULT_PROFILE = "default";
+
     /**
      * Collect bootstrap file from specified dir
      *

@@ -38,12 +38,13 @@ public class ProjectDirBootstrapCollector implements BootstrapCollector {
 
         // for most case, there is only one bootstrap file.
         if (files.length == 1 && files[0].getName().equals("bootstrap")) {
-            map.put("", files[0]);
+            logger.info("Found single bootstrap at {}", files[0]);
+            map.put(DEFAULT_PROFILE, files[0]);
             return map;
         }
 
         //language=RegExp
-        String exp = "(-[a-zA-Z0-9\\-]+)?(\\.sh)?";
+        String exp = "bootstrap(-(?<profile>[a-zA-Z0-9\\-]+))?(\\.sh)?";
         Pattern pattern = Pattern.compile(exp);
 
         Matcher matcher;
@@ -51,13 +52,15 @@ public class ProjectDirBootstrapCollector implements BootstrapCollector {
         for (File file : files) {
             matcher = pattern.matcher(file.getName());
             if (matcher.find()) {
-                profile = matcher.group(0);
+                profile = matcher.group("profile");
+                profile = profile == null || profile.isEmpty() ? DEFAULT_PROFILE : profile;
                 File existing = map.get(profile);
                 if (existing != null) {
-                    String template = "Profile %s appears more than once, please consider remove one form \n%s\nor%s\n";
+                    String template = "Profile [%s] appears more than once, please consider remove one form \n%s\nor\n%s\n";
                     String message = String.format(template, profile, existing, file);
                     throw new RuntimeException(message);
                 }
+                logger.info("Found profiled bootstrap [{}] at {}", profile, files[0]);
                 map.put(profile, file);
             }
         }
