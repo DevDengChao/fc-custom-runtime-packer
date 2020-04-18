@@ -29,6 +29,10 @@ dependencies {
 
 }
 
+test {
+    useJUnitPlatform()
+}
+
 gradlePlugin {
     plugins {
         greetingsPlugin {
