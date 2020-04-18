@@ -93,7 +93,7 @@ class BootstrapDirBootstrapCollectorTest {
         File specifiedProfile = new File(dir, "bootstrap.sh");
         assertTrue(specifiedProfile.createNewFile());
 
-        assertThrows(RuntimeException.class, () -> collector.collect(dir));
+        assertThrows(DuplicateBootstrapProfileException.class, () -> collector.collect(dir));
 
         assertTrue(specifiedProfile.delete());
         assertTrue(defaultProfile.delete());

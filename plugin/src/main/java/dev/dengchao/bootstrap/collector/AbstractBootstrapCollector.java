@@ -48,9 +48,7 @@ public abstract class AbstractBootstrapCollector implements BootstrapCollector {
                 profile = profile.isEmpty() ? DEFAULT_PROFILE : profile;
                 File existing = map.get(profile);
                 if (existing != null) {
-                    String template = "Profile [%s] appears more than once, please consider remove one form \n%s\nor\n%s\n";
-                    String message = String.format(template, profile, existing, file);
-                    throw new RuntimeException(message);
+                    throw new DuplicateBootstrapProfileException(profile, existing, file);
                 }
                 logger.info("Found profiled bootstrap [{}] at {}", profile, files[0]);
                 map.put(profile, file);
