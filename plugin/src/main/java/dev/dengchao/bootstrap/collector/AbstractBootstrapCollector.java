@@ -27,7 +27,7 @@ public abstract class AbstractBootstrapCollector implements BootstrapCollector {
         }
 
         // for most case, there is only one bootstrap file.
-        if (files.length == 1) {
+        if (files.length == 1 && files[0].getName().matches("bootstrap(\\.sh)?")) {
             logger.info("Found single bootstrap at {}", files[0]);
             map.put(DEFAULT_PROFILE, files[0]);
             return map;
