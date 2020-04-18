@@ -1,2 +1,3 @@
 rootProject.name = 'fc-custom-runtime-packer'
-
+include 'plugin'
+include 'demo'
