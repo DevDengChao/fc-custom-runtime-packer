@@ -9,20 +9,20 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProjectDirBootstrapCollectorTest {
+class BootstrapDirBootstrapCollectorTest {
 
     private static File playground;
-    private static ProjectDirBootstrapCollector collector;
+    private static BootstrapDirBootstrapCollector collector;
 
     @BeforeAll
     static void beforeAll() {
-        playground = new File(System.getProperty("java.io.tmpdir"), "project-dir-bootstrap-collector-playground");
+        playground = new File(System.getProperty("java.io.tmpdir"), "bootstrap-dir-bootstrap-collector-playground");
         if (playground.exists()) {
             assertTrue(playground.delete());
         }
         assertTrue(playground.mkdirs());
 
-        collector = new ProjectDirBootstrapCollector();
+        collector = new BootstrapDirBootstrapCollector();
     }
 
     @AfterAll
@@ -66,15 +66,20 @@ class ProjectDirBootstrapCollectorTest {
         File specifiedProfileWithShSuffix = new File(dir, "bootstrap-shell.sh");
         assertTrue(specifiedProfileWithShSuffix.createNewFile());
 
+        File arbitraryProfile = new File(dir, "arbitrary");
+        assertTrue(arbitraryProfile.createNewFile());
+
         Map<String, File> map = collector.collect(dir);
-        assertEquals(3, map.size());
+        assertEquals(4, map.size());
         assertEquals(defaultProfile, map.get(BootstrapCollector.DEFAULT_PROFILE));
         assertEquals(specifiedProfile, map.get("profile"));
         assertEquals(specifiedProfileWithShSuffix, map.get("shell"));
+        assertEquals(arbitraryProfile, map.get("arbitrary"));
 
         assertTrue(defaultProfile.delete());
         assertTrue(specifiedProfile.delete());
         assertTrue(specifiedProfileWithShSuffix.delete());
+        assertTrue(arbitraryProfile.delete());
         assertTrue(dir.delete());
     }
 
@@ -82,15 +87,17 @@ class ProjectDirBootstrapCollectorTest {
     void conflict() throws Exception {
         File dir = new File(playground, "conflict");
         assertTrue(dir.mkdir());
-        File defaultProfile = new File(dir, "bootstrap");
+
+        File defaultProfile = new File(dir, "default");
         assertTrue(defaultProfile.createNewFile());
         File specifiedProfile = new File(dir, "bootstrap.sh");
         assertTrue(specifiedProfile.createNewFile());
 
         assertThrows(RuntimeException.class, () -> collector.collect(dir));
 
-        assertTrue(defaultProfile.delete());
         assertTrue(specifiedProfile.delete());
+        assertTrue(defaultProfile.delete());
         assertTrue(dir.delete());
     }
+
 }
