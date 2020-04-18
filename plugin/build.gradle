@@ -1,34 +1,36 @@
 plugins {
     id 'java'
     id 'java-gradle-plugin'
-    id 'maven-publish' // used to publish to maven local
+    id 'com.gradle.plugin-publish' version '0.11.0'
 }
 
 group 'dev.dengchao'
 version "$VERSION"
 
 repositories {
-    mavenLocal()
     maven { url "https://maven.aliyun.com/repository/central" }
+    maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
     mavenCentral()
 }
 
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.13'
 
+    // https://mvnrepository.com/artifact/org.jetbrains/annotations
+    implementation group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
+
     compileOnly "org.projectlombok:lombok:1.16.16"
     annotationProcessor "org.projectlombok:lombok:1.16.16"
 
 }
 
-// https://docs.gradle.org/current/userguide/publishing_maven.html
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'dev.dengchao'
-            artifactId = 'fc-custom-runtime-packer'
-            version = "$VERSION"
-            from components.java
+gradlePlugin {
+    plugins {
+        greetingsPlugin {
+            //noinspection GroovyAssignabilityCheck
+            id = 'dev.dengchao.fc-custom-runtime-packer'
+            //noinspection GroovyAssignabilityCheck
+            implementationClass = 'dev.dengchao.FcCustomRuntimePackerPlugin'
         }
     }
 }
