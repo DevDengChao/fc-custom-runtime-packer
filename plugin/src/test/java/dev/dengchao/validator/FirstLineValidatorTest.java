@@ -1,6 +1,7 @@
 package dev.dengchao.validator;
 
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +22,11 @@ public class FirstLineValidatorTest {
     public void setUp() throws IOException {
         file = File.createTempFile("bootstrap", "");
         validator = new FirstLineValidator();
+    }
+
+    @AfterEach
+    void tearDown() {
+        assertTrue(file.delete());
     }
 
     @Test
