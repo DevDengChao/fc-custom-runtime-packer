@@ -11,7 +11,7 @@ import java.util.List;
  * Validate the first line's content equals to known values.
  */
 @Slf4j
-public class FirstLineValidator implements Validator {
+public class FirstLineValidator implements SmartValidator {
     /**
      * Accepted values
      */
@@ -31,6 +31,22 @@ public class FirstLineValidator implements Validator {
             return !line.isEmpty() && accepts.contains(line);
         } catch (IOException e) {
             log.warn("Unable to read the first line form {}", file, e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean fix(@NotNull File file) {
+        // fix the bootstrap file by simply adding a header
+        try {
+            RandomAccessFile randomAccessFile = new RandomAccessFile(file, "w");
+            randomAccessFile.seek(0);
+            randomAccessFile.writeUTF(accepts.get(0));
+            randomAccessFile.writeUTF("\n");
+            randomAccessFile.close();
+            return true;
+        } catch (IOException e) {
+            log.warn("Unable to fix {}", file, e);
             return false;
         }
     }
