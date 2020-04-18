@@ -60,16 +60,21 @@ class ProjectDirBootstrapCollectorTest {
         assertTrue(dir.mkdir());
         File defaultProfile = new File(dir, "bootstrap");
         assertTrue(defaultProfile.createNewFile());
-        File specifiedProfile = new File(dir, "bootstrap-profile.sh");
+        File specifiedProfile = new File(dir, "bootstrap-profile");
         assertTrue(specifiedProfile.createNewFile());
 
+        File specifiedProfileWithShSuffix = new File(dir, "bootstrap-shell.sh");
+        assertTrue(specifiedProfileWithShSuffix.createNewFile());
+
         Map<String, File> map = collector.collect(dir);
-        assertEquals(2, map.size());
+        assertEquals(3, map.size());
         assertEquals(defaultProfile, map.get(BootstrapCollector.DEFAULT_PROFILE));
         assertEquals(specifiedProfile, map.get("profile"));
+        assertEquals(specifiedProfileWithShSuffix, map.get("shell"));
 
         assertTrue(defaultProfile.delete());
         assertTrue(specifiedProfile.delete());
+        assertTrue(specifiedProfileWithShSuffix.delete());
         assertTrue(dir.delete());
     }
 
