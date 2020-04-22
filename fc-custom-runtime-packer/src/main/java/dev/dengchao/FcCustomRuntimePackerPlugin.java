@@ -22,6 +22,12 @@ public class FcCustomRuntimePackerPlugin implements Plugin<Project> {
 
     @Override
     public void apply(@NotNull Project project) {
+        Object version = project.getVersion();
+        if (Project.DEFAULT_VERSION.equals(version)) {
+            throw new RuntimeException("Unable to determine project version, please move \"apply plugin: 'dev.dengchao.fc-custom-runtime-packer'\" below version.\n" +
+                    "See https://stackoverflow.com/questions/13198358/how-to-get-project-version-in-custom-gradle-plugin for more details");
+        }
+
         TaskContainer tasks = project.getTasks();
         Task bootJar = tasks.findByName("bootJar");
         if (bootJar == null) {
