@@ -39,10 +39,10 @@ public class ZipBootstrap extends Zip {
     @Nullable
     private File bootstrap;
     /**
-     * The original build result.
+     * The bootJar archive file.
      */
     @Nullable
-    private File build;
+    private File bootJarArchive;
 
     public void setProfile(@NotNull String profile) {
         this.profile = profile;
@@ -52,15 +52,15 @@ public class ZipBootstrap extends Zip {
         this.bootstrap = bootstrap;
     }
 
-    public void setBuild(@NotNull File build) {
-        this.build = build;
+    public void setBootJarArchive(@NotNull File bootJarArchive) {
+        this.bootJarArchive = bootJarArchive;
     }
 
     @TaskAction
     void taskAction() {
         Objects.requireNonNull(profile);
         Objects.requireNonNull(bootstrap);
-        Objects.requireNonNull(build);
+        Objects.requireNonNull(bootJarArchive);
 
         getArchiveExtension().set(".zip");
         setMetadataCharset("UTF-8");
@@ -79,7 +79,7 @@ public class ZipBootstrap extends Zip {
                             BufferedReader reader = new BufferedReader(new FileReader(bootstrap));
                             List<String> lines = reader.lines().collect(Collectors.toList());
                             for (String line : lines) {
-                                out.write(line.replaceAll("\\$\\{build}", build.getName()).getBytes());
+                                out.write(line.replaceAll("\\$\\{archive}", bootJarArchive.getName()).getBytes());
                             }
                             out.flush();
                         } catch (IOException e) {
@@ -87,9 +87,9 @@ public class ZipBootstrap extends Zip {
                         }
                     });
                     return new FileTreeAdapter(source);
-                }).into(dir);
+                })
+                .into(dir);
         copy();
 
-        // TODO dengchao 2020/4/18: zip bootstrap together with build into build.zip
     }
 }
