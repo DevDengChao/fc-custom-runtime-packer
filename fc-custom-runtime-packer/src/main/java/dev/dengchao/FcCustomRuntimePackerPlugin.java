@@ -6,6 +6,7 @@ import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
+import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.api.tasks.bundling.AbstractArchiveTask;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +31,8 @@ public class FcCustomRuntimePackerPlugin implements Plugin<Project> {
         if (!(bootJar instanceof AbstractArchiveTask)) {
             throw new RuntimeException("Task 'bootJar' has changed its specification, please contact https://github.com/XieEDeHeiShou to update this plugin.");
         }
-        File archive = ((AbstractArchiveTask) bootJar).getArchiveFile().get().getAsFile();
+        AbstractArchiveTask archiveTask = (AbstractArchiveTask) bootJar;
+        File archive = archiveTask.getArchiveFile().get().getAsFile();
         log.info("Found bootJar.archiveFile at {}", archive);
 
         Map<String, File> bootstraps = new ProjectBootstrapCollector().collect(project.getProjectDir());
@@ -41,6 +43,8 @@ public class FcCustomRuntimePackerPlugin implements Plugin<Project> {
         }
 
         Task zipBootstrap = tasks.create("zipBootstrap");
+        zipBootstrap.setGroup(BasePlugin.BUILD_GROUP);
+        zipBootstrap.setDescription(String.format("Zip each bootstrap file together with %s", archive.getName()));
         for (Map.Entry<String, File> entry : entries) {
             String profile = entry.getKey();
 
@@ -51,11 +55,14 @@ public class FcCustomRuntimePackerPlugin implements Plugin<Project> {
 
             String name = "zipBootstrap" + c + profile.substring(1);
             tasks.create(name, ZipBootstrap.class, it -> {
-                it.getLogger().debug("configuring");
+                it.getLogger().info("Configuring " + it.getName());
+                it.setGroup(BasePlugin.BUILD_GROUP);
+                it.setDescription(String.format("Zip bootstrap file %1$s together with %2$s", profile, archive.getName()));
                 it.setProfile(profile);
                 it.setBootstrap(entry.getValue());
                 it.setBootJarArchive(archive);
-            }).dependsOn(bootJar);
+                it.dependsOn(bootJar);
+            });
             zipBootstrap.dependsOn(name);
         }
     }
