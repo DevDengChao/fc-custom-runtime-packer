@@ -1,32 +1,22 @@
 package dev.dengchao;
 
-import org.gradle.api.internal.file.collections.FileTreeAdapter;
-import org.gradle.api.internal.file.collections.GeneratedSingletonFileTree;
-import org.gradle.api.logging.Logger;
-import org.gradle.api.logging.Logging;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.api.tasks.bundling.Zip;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Zip build result together with bootstrap into a zip file.
- *
- * @see org.gradle.jvm.tasks.Jar
  */
-@SuppressWarnings("UnstableApiUsage")
-public class ZipBootstrap extends Zip {
-    @NotNull
-    private static final Logger logger = Logging.getLogger(ZipBootstrap.class);
+public class ZipBootstrap extends DefaultTask {
 
     /**
      * The profile which this task is focusing on.
@@ -43,53 +33,62 @@ public class ZipBootstrap extends Zip {
      */
     @Nullable
     private File bootJarArchive;
+    private File output;
 
-    public void setProfile(@NotNull String profile) {
+    void setProfile(@NotNull String profile) {
         this.profile = profile;
     }
 
-    public void setBootstrap(@NotNull File bootstrap) {
+    void setBootstrap(@NotNull File bootstrap) {
         this.bootstrap = bootstrap;
     }
 
-    public void setBootJarArchive(@NotNull File bootJarArchive) {
+    void setBootJarArchive(@NotNull File bootJarArchive) {
         this.bootJarArchive = bootJarArchive;
     }
 
-    @TaskAction
-    void taskAction() {
-        Objects.requireNonNull(profile);
-        Objects.requireNonNull(bootstrap);
+    @OutputFile
+    public File getOutput() {
         Objects.requireNonNull(bootJarArchive);
 
-        getArchiveExtension().set(".zip");
-        setMetadataCharset("UTF-8");
-
-        File dir = new File(getProject().getBuildDir(), "generated/sources/bootstrap/" + profile);
+        File dir = new File(getProject().getBuildDir(), "libs");
         if (!dir.exists()) {
             //noinspection ResultOfMethodCallIgnored
             dir.mkdirs();
         }
 
-        getMainSpec()
-                .addChild()
-                .from((Callable<FileTreeAdapter>) () -> {
-                    GeneratedSingletonFileTree source = new GeneratedSingletonFileTree(getTemporaryDirFactory(), "bootstrap", out -> {
-                        try {
-                            BufferedReader reader = new BufferedReader(new FileReader(bootstrap));
-                            List<String> lines = reader.lines().collect(Collectors.toList());
-                            for (String line : lines) {
-                                out.write(line.replaceAll("\\$\\{archive}", bootJarArchive.getName()).getBytes());
-                            }
-                            out.flush();
-                        } catch (IOException e) {
-                            throw new RuntimeException(String.format("Unable to transform bootstrap file %s", bootstrap), e);
-                        }
-                    });
-                    return new FileTreeAdapter(source);
-                })
-                .into(dir);
-        copy();
+        output = new File(dir, bootJarArchive.getName().replaceFirst("\\.jar", "-" + profile + "\\.zip"));
 
+        return output;
+    }
+
+    @TaskAction
+    public void taskAction() throws IOException {
+        Objects.requireNonNull(profile);
+        Objects.requireNonNull(bootstrap);
+        Objects.requireNonNull(bootJarArchive);
+
+        getLogger().debug("Output into {}", output);
+
+        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(output));
+
+        out.putNextEntry(new ZipEntry("bootstrap"));
+        BufferedReader bootstrapReader = new BufferedReader(new FileReader(this.bootstrap));
+        List<String> lines = bootstrapReader.lines().collect(Collectors.toList());
+        for (String line : lines) {
+            out.write(line.replaceAll("archive|boot\\.jar", bootJarArchive.getName()).getBytes());
+        }
+        out.closeEntry();
+        getLogger().debug("Bootstrap file zipped");
+
+        out.putNextEntry(new ZipEntry(bootJarArchive.getName()));
+        FileInputStream bootJarInputStream = new FileInputStream(bootJarArchive);
+        byte[] bytes = new byte[bootJarInputStream.available()];
+        out.write(bytes);
+        out.closeEntry();
+        getLogger().debug("Boot jar file zipped");
+
+        out.flush();
+        out.close();
     }
 }
