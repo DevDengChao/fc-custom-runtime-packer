@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath "dev.dengchao:fc-custom-runtime-packer:0.0.3"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.2.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
@@ -7,6 +16,8 @@ plugins {
 group = 'dev.dengchao'
 version = '1.0.0'
 sourceCompatibility = '1.8'
+
+apply plugin: 'dev.dengchao.fc-custom-runtime-packer'
 
 repositories {
     mavenCentral()
@@ -21,4 +32,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    enabled = true
 }
