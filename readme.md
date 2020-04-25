@@ -61,7 +61,7 @@ project dir
 
 + **It's content MAY have one or more place holder `archive` or `boot.jar`, which will be replaced by actual bootJar name 
        in generated bootstrap file**. eg: `java -jar archive` will result `java -jar demo-1.0.0.jar`
-    + See [ZipBootstrap][^ZipBootstrap] for more details.
+    + See [ReplacePlaceHolderContentInterceptor][^ReplacePlaceHolderContentInterceptor] for more details.
 + If it is placed under project dir like (3), its name MUST match regex expression `bootstrap(-[a-zA-Z0-9\-]+)?(\.sh)?`
     + If a profile `(-[a-zA-Z0-9\-]+)` is present, it will result a `${PROJECT_NAME}-${PROJECT_VERSION}-${PROFILE}.zip` zip.  
     + If the profile is not present,  it will result a `${PROJECT_NAME}-${PROJECT_VERSION}-default.zip` zip.
@@ -72,10 +72,11 @@ project dir
 + It's content MAY have announced its [shebang command][^Shebang @wikipedia.org]. Accepted values are `#!/bin/bash` and 
     `#!/usr/bin/env sh`.
     + If it is missing or having an invalid shebang command, `#!/bin/bash` will be prepend into generated bootstrap.    
-    + See [ShebangValidator][^ShebangValidator] for more details.
+    + See [ShebangInterceptor][^ShebangInterceptor] for more details.
 + It MAY have granted the execution permission.
     + As the bootstrap inside the zip file is a generated file, not the original one, so the execution permission 
     the original file have is ignored, and the generated one's [file mode][^Unix file mode] is setting to 775. 
+    + See [ZipBootstrap][^ZipBootstrap] for more details.
 + If there are more than one bootstrap files having the same profile, 
     a [DuplicateBootstrapProfileException][^DuplicateBootstrapProfileException] will be thrown when running.
     + See [ProjectBootstrapCollector][^ProjectBootstrapCollector] for more details.
@@ -91,10 +92,11 @@ project dir
 
 
 
-[^ZipBootstrap]:fc-custom-runtime-packer/src/main/java/dev/dengchao/ZipBootstrap.java
+[^ReplacePlaceHolderContentInterceptor]:fc-custom-runtime-packer/src/main/java/dev/dengchao/content/interceptor/ReplacePlaceHolderContentInterceptor.java
 [^ProjectDirBootstrapCollector]:fc-custom-runtime-packer/src/main/java/dev/dengchao/bootstrap/collector/ProjectDirBootstrapCollector.java
 [^BootstrapDirBootstrapCollector]:fc-custom-runtime-packer/src/main/java/dev/dengchao/bootstrap/collector/BootstrapDirBootstrapCollector.java
-[^ShebangValidator]:fc-custom-runtime-packer/src/main/java/dev/dengchao/validator/ShebangValidator.java
+[^ShebangInterceptor]:fc-custom-runtime-packer/src/main/java/dev/dengchao/content/interceptor/ShebangInterceptor.java
+[^ZipBootstrap]:fc-custom-runtime-packer/src/main/java/dev/dengchao/ZipBootstrap.java
 [^Unix file mode]:https://www.tutorialspoint.com/unix/unix-file-permission.htm
 [^DuplicateBootstrapProfileException]:fc-custom-runtime-packer/src/main/java/dev/dengchao/bootstrap/collector/DuplicateBootstrapProfileException.java
 [^ProjectBootstrapCollector]:fc-custom-runtime-packer/src/main/java/dev/dengchao/bootstrap/collector/ProjectBootstrapCollector.java
