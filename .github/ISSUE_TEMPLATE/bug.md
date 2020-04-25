@@ -27,9 +27,10 @@ I'm using version x.y.z
 + [ ] yes, it is: 
 + [ ] no, I don't known how to reproduce my situation. 
 + [ ] no, but this problem could be reproduced by:
-    0.
-    0.
-    0.     
+    
+    1.
+    1.
+    1.
 
 ### Are you going to creat a PR later to fix this bug?
 
