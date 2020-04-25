@@ -55,8 +55,8 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = 'https://gitee.com/dengchao1183570/fc-custom-runtime-packer'
-    vcsUrl = 'https://gitee.com/dengchao1183570/fc-custom-runtime-packer'
+    website = 'https://github.com/XieEDeHeiShou/fc-custom-runtime-packer'
+    vcsUrl = 'https://github.com/XieEDeHeiShou/fc-custom-runtime-packer'
     description = 'Compress bootstrap files together with your boot.jar into a function compute\'s zip'
     tags = ['spring-boot']
 
