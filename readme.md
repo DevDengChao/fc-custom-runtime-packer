@@ -82,6 +82,10 @@ More additionally, you can run `gradle :zipBootstrapDefault` to package default 
     a [DuplicateBootstrapProfileException][^DuplicateBootstrapProfileException] will be thrown when running.
     + See [ProjectBootstrapCollector][^ProjectBootstrapCollector] for more details.
 
+## Contributing
+
+Please PR to develop branch.
+
 # Reference
 [Spring boot gradle plugin @github.com](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin)
 
