@@ -33,7 +33,8 @@ I'm using version x.y.z
 
 ### Are you going to creat a PR later to fix this bug?
 
-+ [ ] yes
++ [ ] yes. We are looking forward to seeing your pr as soon as possible.
++ [ ] maybe. Need help? Just comment below, we'll response soon.
 + [ ] no
 
 ### Additional information which might be helpful:
