@@ -1,6 +1,9 @@
 package dev.dengchao;
 
 import dev.dengchao.bootstrap.collector.ProjectBootstrapCollector;
+import dev.dengchao.validator.ExecutionValidator;
+import dev.dengchao.validator.ShebangValidator;
+import dev.dengchao.validator.SmartValidator;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -12,6 +15,8 @@ import org.gradle.api.tasks.bundling.AbstractArchiveTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,8 +56,18 @@ public class FcCustomRuntimePackerPlugin implements Plugin<Project> {
         Task zipBootstrap = tasks.create("zipBootstrap");
         zipBootstrap.setGroup(BasePlugin.BUILD_GROUP);
         zipBootstrap.setDescription(String.format("Zip each bootstrap file together with %s", archive.getName()));
+
+        List<SmartValidator> validators = Arrays.asList(new ExecutionValidator(), new ShebangValidator());
+
         for (Map.Entry<String, File> entry : entries) {
             String profile = entry.getKey();
+
+            File bootstrap = entry.getValue();
+            for (SmartValidator validator : validators) {
+                if (!validator.test(bootstrap)) {
+                    validator.fix(bootstrap);
+                }
+            }
 
             char c = profile.charAt(0);
             if (c > 'a' && c < 'z') {
@@ -65,7 +80,7 @@ public class FcCustomRuntimePackerPlugin implements Plugin<Project> {
                 it.setGroup(BasePlugin.BUILD_GROUP);
                 it.setDescription(String.format("Zip bootstrap file %1$s together with %2$s", profile, archive.getName()));
                 it.setProfile(profile);
-                it.setBootstrap(entry.getValue());
+                it.setBootstrap(bootstrap);
                 it.setBootJarArchive(archive);
                 it.dependsOn(bootJar);
             });
