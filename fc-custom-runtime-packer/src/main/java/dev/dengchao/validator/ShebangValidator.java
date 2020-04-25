@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * Validate the first line's content equals to known values.
  */
-public class FirstLineValidator implements SmartValidator {
-    private static final Logger logger = Logging.getLogger(FirstLineValidator.class);
+public class ShebangValidator implements SmartValidator {
+    private static final Logger logger = Logging.getLogger(ShebangValidator.class);
     /**
      * Accepted values
      */
@@ -41,10 +41,10 @@ public class FirstLineValidator implements SmartValidator {
                 }
             }
 
-            logger.warn("Unacceptable first line [{}] found at file {}", line, file);
+            logger.warn("Unacceptable shebang [{}] found at file {}", line, file);
             return false;
         } catch (IOException e) {
-            logger.warn("Unable to read the first line form file {}", file, e);
+            logger.warn("Unable to read shebang form file {}", file, e);
             return false;
         }
     }
@@ -55,8 +55,8 @@ public class FirstLineValidator implements SmartValidator {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
             randomAccessFile.seek(0);
-            randomAccessFile.writeUTF(accepts.get(0));
-            randomAccessFile.writeUTF("\n");
+            randomAccessFile.write(accepts.get(0).getBytes());
+            randomAccessFile.write("\n".getBytes());
             randomAccessFile.close();
             return true;
         } catch (IOException e) {
