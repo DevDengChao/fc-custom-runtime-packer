@@ -3,7 +3,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath "dev.dengchao:fc-custom-runtime-packer:0.0.3"
+        classpath "dev.dengchao:fc-custom-runtime-packer:${VERSION}"
     }
 }
 
