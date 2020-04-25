@@ -1,5 +1,8 @@
 package dev.dengchao;
 
+import org.apache.commons.compress.archivers.zip.AsiExtraField;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
@@ -10,8 +13,6 @@ import java.io.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * Zip build result together with bootstrap into a zip file.
@@ -70,22 +71,26 @@ public class ZipBootstrap extends DefaultTask {
 
         getLogger().debug("Output into {}", output);
 
-        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(output));
+        ZipArchiveOutputStream out = new ZipArchiveOutputStream(new FileOutputStream(output));
 
-        out.putNextEntry(new ZipEntry("bootstrap"));
+        ZipArchiveEntry bootstrapEntry = new ZipArchiveEntry("bootstrap");
+        bootstrapEntry.setUnixMode(0x775);
+        out.putArchiveEntry(bootstrapEntry);
         BufferedReader bootstrapReader = new BufferedReader(new FileReader(this.bootstrap));
         List<String> lines = bootstrapReader.lines().collect(Collectors.toList());
+        byte[] newLine = "\n".getBytes();
         for (String line : lines) {
             out.write(line.replaceAll("archive|boot\\.jar", bootJarArchive.getName()).getBytes());
+            out.write(newLine);
         }
-        out.closeEntry();
+        out.closeArchiveEntry();
         getLogger().debug("Bootstrap file zipped");
 
-        out.putNextEntry(new ZipEntry(bootJarArchive.getName()));
+        out.putArchiveEntry(new ZipArchiveEntry(bootJarArchive.getName()));
         FileInputStream bootJarInputStream = new FileInputStream(bootJarArchive);
         byte[] bytes = new byte[bootJarInputStream.available()];
         out.write(bytes);
-        out.closeEntry();
+        out.closeArchiveEntry();
         getLogger().debug("Boot jar file zipped");
 
         out.flush();
