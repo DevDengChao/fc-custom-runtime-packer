@@ -1,5 +1,8 @@
 package dev.dengchao;
 
+import dev.dengchao.content.interceptor.ContentInterceptor;
+import dev.dengchao.content.interceptor.ReplacePlaceHolderContentInterceptor;
+import dev.dengchao.content.interceptor.ShebangInterceptor;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.gradle.api.DefaultTask;
@@ -19,6 +22,7 @@ import java.util.zip.CRC32;
  */
 public class ZipBootstrap extends DefaultTask {
 
+    private static final ContentInterceptor SHEBANG_INTERCEPTOR = new ShebangInterceptor();
     /**
      * The profile which this task is focusing on.
      */
@@ -71,17 +75,24 @@ public class ZipBootstrap extends DefaultTask {
 
         getLogger().debug("Output into {}", output);
 
+        ContentInterceptor replacePlaceHolderContentInterceptor = new ReplacePlaceHolderContentInterceptor(bootJarArchive.getName());
+
         ZipArchiveOutputStream out = new ZipArchiveOutputStream(new FileOutputStream(output));
 
         //region zip bootstrap
         ZipArchiveEntry bootstrapEntry = new ZipArchiveEntry("bootstrap");
         bootstrapEntry.setUnixMode(0x775);
         out.putArchiveEntry(bootstrapEntry);
-        BufferedReader bootstrapReader = new BufferedReader(new FileReader(this.bootstrap));
-        List<String> lines = bootstrapReader.lines().collect(Collectors.toList());
+        List<String> lines = new BufferedReader(new FileReader(this.bootstrap)).lines().collect(Collectors.toList());
         byte[] newLine = "\n".getBytes();
-        for (String line : lines) {
-            out.write(line.replaceAll("archive|boot\\.jar", bootJarArchive.getName()).getBytes());
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            if (i == 0) {
+                line = SHEBANG_INTERCEPTOR.intercept(line);
+            } else {
+                line = replacePlaceHolderContentInterceptor.intercept(line);
+            }
+            out.write(line.getBytes());
             out.write(newLine);
         }
         out.closeArchiveEntry();
