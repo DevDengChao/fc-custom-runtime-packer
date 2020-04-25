@@ -2,7 +2,7 @@
 
 This is a gradle plugin used to automatically compress your bootJar with a bootstrap file into a zip.
 
-After applying this plugin, it will try to search _bootstrap_ files under ${PROJECT_DIR} and ${PROJECT_DIR}/bootstrap dir.
+After applying this plugin, it will try to search _bootstrap_ files under `${PROJECT_DIR}` and `${PROJECT_DIR}/bootstrap` dir.
 
 # How to install
 
