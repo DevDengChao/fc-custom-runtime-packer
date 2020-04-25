@@ -4,6 +4,7 @@ This is a gradle plugin used to automatically compress your bootJar with a boots
 
 After applying this plugin, it will try to search _bootstrap_ files under `${PROJECT_DIR}` and `${PROJECT_DIR}/bootstrap` dir.
 
+
 # How to install
 
 ```groovy
@@ -21,6 +22,7 @@ version 'your-project-version'
 // This plugin MUST be applied below version field.
 apply plugin: "dev.dengchao.fc-custom-runtime-packer"
 ```
+
 
 # How to use
 
@@ -82,11 +84,19 @@ More additionally, you can run `gradle :zipBootstrapDefault` to package default 
     a [DuplicateBootstrapProfileException][^DuplicateBootstrapProfileException] will be thrown when running.
     + See [ProjectBootstrapCollector][^ProjectBootstrapCollector] for more details.
 
-## Contributing
+
+# Contributing
 
 Please PR to develop branch.
 
+
+# LICENSE
+
+[Apache 2.0](LICENSE)
+
+
 # Reference
+
 [Spring boot gradle plugin @github.com](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin)
 
 [How to get project version in custom gradle plugin @stackoverflow.com](https://stackoverflow.com/questions/13198358/how-to-get-project-version-in-custom-gradle-plugin)
