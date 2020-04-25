@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class FirstLineValidatorTest {
+public class ShebangValidatorTest {
 
     private SmartValidator validator;
     private File file;
@@ -21,7 +21,7 @@ public class FirstLineValidatorTest {
     @BeforeEach
     public void setUp() throws IOException {
         file = File.createTempFile("bootstrap", "");
-        validator = new FirstLineValidator();
+        validator = new ShebangValidator();
     }
 
     @AfterEach
@@ -52,7 +52,7 @@ public class FirstLineValidatorTest {
     }
 
     @Test
-    public void headerNotFound() throws Exception {
+    public void shebangNotFound() throws Exception {
         String content = "\n" +
                 "\n" +
                 "java -jar hello-world.jar";

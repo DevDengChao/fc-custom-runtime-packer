@@ -2,10 +2,14 @@ plugins {
     id 'java'
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.11.0'
+
+    //region publish to maven local for integrate development testing
+    id 'maven-publish'
+    //endregion
 }
 
 group 'dev.dengchao'
-version "0.0.2"
+version "${VERSION}"
 
 repositories {
     maven { url "https://maven.aliyun.com/repository/central" }
@@ -25,6 +29,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
     implementation group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
 
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
+    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.20'
+
 //    Incompatible with java-gradle-plugin
 //    compileOnly "org.projectlombok:lombok:1.16.16"
 //    annotationProcessor "org.projectlombok:lombok:1.16.16"
@@ -38,7 +45,7 @@ test {
 gradlePlugin {
     //noinspection GroovyAssignabilityCheck
     plugins {
-        greetingsPlugin {
+        fcCustomRuntimePacker {
             //noinspection GroovyAssignabilityCheck
             id = 'dev.dengchao.fc-custom-runtime-packer'
             //noinspection GroovyAssignabilityCheck
@@ -46,3 +53,25 @@ gradlePlugin {
         }
     }
 }
+
+pluginBundle {
+    website = 'https://gitee.com/dengchao1183570/fc-custom-runtime-packer'
+    vcsUrl = 'https://gitee.com/dengchao1183570/fc-custom-runtime-packer'
+    description = 'Zip bootstrap files together with your build into a function compute\'s zip'
+    tags = ['spring-boot']
+
+    plugins {
+        fcCustomRuntimePacker {
+            id = 'dev.dengchao.fc-custom-runtime-packer'
+            displayName = 'Fc custom runtime packer plugin'
+        }
+    }
+}
+
+//region publish to maven local for integrate development testing
+publishing {
+    repositories {
+        mavenLocal()
+    }
+}
+//endregion
