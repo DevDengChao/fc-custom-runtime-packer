@@ -1,6 +1,5 @@
 package dev.dengchao;
 
-import org.apache.commons.compress.archivers.zip.AsiExtraField;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.gradle.api.DefaultTask;
@@ -13,6 +12,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.zip.CRC32;
 
 /**
  * Zip build result together with bootstrap into a zip file.
@@ -73,6 +73,7 @@ public class ZipBootstrap extends DefaultTask {
 
         ZipArchiveOutputStream out = new ZipArchiveOutputStream(new FileOutputStream(output));
 
+        //region zip bootstrap
         ZipArchiveEntry bootstrapEntry = new ZipArchiveEntry("bootstrap");
         bootstrapEntry.setUnixMode(0x775);
         out.putArchiveEntry(bootstrapEntry);
@@ -85,13 +86,26 @@ public class ZipBootstrap extends DefaultTask {
         }
         out.closeArchiveEntry();
         getLogger().debug("Bootstrap file zipped");
+        //endregion
 
-        out.putArchiveEntry(new ZipArchiveEntry(bootJarArchive.getName()));
+        //region zip boot jar
         FileInputStream bootJarInputStream = new FileInputStream(bootJarArchive);
         byte[] bytes = new byte[bootJarInputStream.available()];
+        if (bootJarInputStream.read(bytes) != bytes.length) {
+            throw new RuntimeException(String.format("Unable to read %s fully", bootJarArchive));
+        }
+        ZipArchiveEntry archiveEntry = new ZipArchiveEntry(bootJarArchive.getName());
+        archiveEntry.setMethod(ZipArchiveEntry.STORED);
+        archiveEntry.setCompressedSize(bootJarArchive.length());
+        archiveEntry.setSize(bootJarArchive.length());
+        CRC32 crc32 = new CRC32();
+        crc32.update(bytes);
+        archiveEntry.setCrc(crc32.getValue());
+        out.putArchiveEntry(archiveEntry);
         out.write(bytes);
         out.closeArchiveEntry();
         getLogger().debug("Boot jar file zipped");
+        //endregion
 
         out.flush();
         out.close();
