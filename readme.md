@@ -38,7 +38,7 @@ project dir
 +--- build.gradle (plugin applyed)
 ```
 
-After `gradle :zipBootstrap`, there will be a regular bootJar, three profile-ed bootstrap zip:
+After run `gradle :zipBootstrap`, there will be a regular bootJar, three profile-ed bootstrap zip:
 ```
 project dir
 +...
@@ -56,6 +56,7 @@ project dir
             \--- demo-1.0.0.jar
 +...
 ``` 
+More additionally, you can run `gradle :zipBootstrapDefault` to package default profile only, so does other profiles.
 
 ## Bootstrap file spec
 
