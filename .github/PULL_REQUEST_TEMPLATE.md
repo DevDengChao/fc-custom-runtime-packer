@@ -14,9 +14,4 @@
 + [ ] yes, part of the modifications tested.
 + [ ] noop, I just tested it manually.
 + [ ] noop, I don't known how to do it.
-+ [ ] noop, the document/comments is not testable.
-
-### Are your pull request to develop branch?
-
-+ [ ] yes
-+ [ ] noop, I'd change it now.
++ [ ] noop, the document is not testable.
