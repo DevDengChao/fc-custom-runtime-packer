@@ -29,6 +29,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
     implementation group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
 
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
+    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.20'
+
 //    Incompatible with java-gradle-plugin
 //    compileOnly "org.projectlombok:lombok:1.16.16"
 //    annotationProcessor "org.projectlombok:lombok:1.16.16"
