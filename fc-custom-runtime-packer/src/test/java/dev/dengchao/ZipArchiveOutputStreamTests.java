@@ -16,20 +16,18 @@ class ZipArchiveOutputStreamTests {
     // https://www.computerhope.com/unix/uls.htm#long-listing
     // https://www.computerhope.com/unix/uchmod.htm
 
-    @Test
-    void test() throws Exception {
-        File dir = new File("../");
+    private static void print(@NotNull String... cmd) throws IOException, InterruptedException {
+        Process process = new ProcessBuilder(cmd).start();
+        process.waitFor();
 
-        File gradlewZip = new File(dir, "gradlew.zip");
-        if (!gradlewZip.exists()) {
-            Assertions.assertTrue(gradlewZip.createNewFile());
-        }
-
-        zip(dir, gradlewZip);
-        unzip(dir, gradlewZip);
+        InputStream inputStream = process.getInputStream();
+        int size = inputStream.available();
+        byte[] bytes = new byte[size];
+        assertEquals(size, inputStream.read(bytes));
+        System.out.println(new String(bytes));
     }
 
-    private void zip(@NotNull File dir, @NotNull File output) throws IOException {
+    private static void zip(@NotNull File dir, @NotNull File output) throws IOException {
         ZipArchiveOutputStream outputStream = new ZipArchiveOutputStream(new FileOutputStream(output));
 
         // gradlew is -rwxrwxr-x which equals to 'chmod 775 gradlew'
@@ -67,7 +65,7 @@ class ZipArchiveOutputStreamTests {
         System.out.println(String.format("Zip %1$s into %2$s as gradlew.sh success", gradlew, output));
     }
 
-    private void unzip(@NotNull File dir, @NotNull File input) throws IOException, InterruptedException {
+    private static void unzip(@NotNull File dir, @NotNull File input) throws IOException, InterruptedException {
         if (!System.getProperties().getOrDefault("os.name", "Linux").equals("Linux")) {
             System.out.println(String.format("unzip command may not available on your os.\n" +
                     "Please unzip %s manually to verify whether gradlew.sh is executable or not.", input));
@@ -79,7 +77,9 @@ class ZipArchiveOutputStreamTests {
         }
         String outputDir = dir.getAbsolutePath();
         new ProcessBuilder("unzip", "-d", outputDir, input.getAbsolutePath()).start().waitFor();
+    }
 
+    private static void verify(@NotNull String outputDir) throws IOException, InterruptedException {
         System.out.println(String.format("Executing 'ls -l %s'", outputDir));
         print("ls", "-l", outputDir);
 
@@ -90,14 +90,24 @@ class ZipArchiveOutputStreamTests {
         print("bash", outputDir + "/gradlew.sh", "--version");
     }
 
-    private void print(String... cmd) throws IOException, InterruptedException {
-        Process process = new ProcessBuilder(cmd).start();
-        process.waitFor();
+    private static void cleanup(@NotNull File dir) {
+        assertTrue(new File(dir, "gradlew.zip").delete());
+        assertTrue(new File(dir, "gradlew.sh").delete());
+    }
 
-        InputStream inputStream = process.getInputStream();
-        int size = inputStream.available();
-        byte[] bytes = new byte[size];
-        assertEquals(size, inputStream.read(bytes));
-        System.out.println(new String(bytes));
+    @Test
+    void test() throws Exception {
+        File dir = new File("../");
+
+        File gradlewZip = new File(dir, "gradlew.zip");
+        if (!gradlewZip.exists()) {
+            Assertions.assertTrue(gradlewZip.createNewFile());
+        }
+
+        zip(dir, gradlewZip);
+        unzip(dir, gradlewZip);
+
+        verify(dir.getAbsolutePath());
+        cleanup(dir);
     }
 }
