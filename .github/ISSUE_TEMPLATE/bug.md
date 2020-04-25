@@ -11,8 +11,8 @@ I'm using version x.y.z
 
 ### There is no similar issues:
 
-+ [ ] yes
-+ [ ] no, it is: 
++ [ ] Yes.
++ [ ] No, it is: 
 
 ### Expected behavior:
 
@@ -24,9 +24,9 @@ I'm using version x.y.z
 
 ### Is there a repository that could reproduce your problem?
 
-+ [ ] yes, it is: 
-+ [ ] no, I don't known how to reproduce my situation. 
-+ [ ] no, but this problem could be reproduced by:
++ [ ] Yes, it is: 
++ [ ] No, I don't known how to reproduce my situation. 
++ [ ] No, but this problem could be reproduced by:
     
     1.
     1.
@@ -34,9 +34,9 @@ I'm using version x.y.z
 
 ### Are you going to creat a PR later to fix this bug?
 
-+ [ ] yes. We are looking forward to seeing your pr as soon as possible.
-+ [ ] maybe. Need help? Just comment below, we'll response soon.
-+ [ ] no
++ [ ] Yes. We are looking forward to seeing your pr as soon as possible.
++ [ ] Maybe. Need help? Just comment below, we'll response soon.
++ [ ] No.
 
 ### Additional information which might be helpful:
 

@@ -11,8 +11,8 @@ I'm using version x.y.z
 
 ### There is no similar improvement requests:
 
-+ [ ] yes
-+ [ ] no, it is: 
++ [ ] Yes.
++ [ ] No, it is: 
 
 ### What problem you meet?
 
@@ -24,9 +24,9 @@ I'm using version x.y.z
 
 ### Are you going to creat a PR later to implement this feature?
 
-+ [ ] yes. We are looking forward to seeing your pr as soon as possible.
-+ [ ] maybe. Need help? Just comment below, we'll response soon.
-+ [ ] no
++ [ ] Yes. We are looking forward to seeing your pr as soon as possible.
++ [ ] Maybe. Need help? Just comment below, we'll response soon.
++ [ ] No.
    
 
 ### Additional information which might be helpful:
