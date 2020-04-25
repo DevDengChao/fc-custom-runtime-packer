@@ -35,20 +35,20 @@ class ZipArchiveOutputStreamTests {
         // gradlew is -rwxrwxr-x which equals to 'chmod 775 gradlew'
 
         int mode = 0x775;
-        // mode     permission executable   writable
-        // 0x000    ---------- no           protected
-        // 0x111    -r---w---x yes          protected
-        // 0x222    ----r---w- no           protected
-        // 0x333    -r--rw--wx yes          protected
-        // 0x444    ---x---r-- no           protected
-        // 0x555    -r-x-w-r-x yes          protected
-        // 0x666    ---xr--rw- no           protected
-        // 0x755    -r-x-w-r-x yes          protected
-        // 0x775    -r-xrw-r-x yes          protected
-        // 0x777    -r-xrw-rwx yes          protected
-        // 0x888    --w---x--- no           protected
-        // 0x995    -rw--w-r-x yes          yes
-        // 0x999    -rw--wx--x yes          yes
+        // mode    |permission  |bash executable  |self executable    |writable
+        // 0x000    ----------   no                no                  protected
+        // 0x111    -r---w---x   yes               no                  protected
+        // 0x222    ----r---w-   no                no                  protected
+        // 0x333    -r--rw--wx   yes               no                  protected
+        // 0x444    ---x---r--   no                yes                 protected
+        // 0x555    -r-x-w-r-x   yes               yes                 protected   (optional)
+        // 0x666    ---xr--rw-   no                yes                 protected
+        // 0x755    -r-x-w-r-x   yes               yes                 protected   (optional)
+        // 0x775    -r-xrw-r-x   yes               yes                 protected   (optional)  (prefer)
+        // 0x777    -r-xrw-rwx   yes               yes                 protected   (optional)
+        // 0x888    --w---x---   no                no                  protected
+        // 0x995    -rw--w-r-x   yes               no                  yes
+        // 0x999    -rw--wx--x   yes               no                  yes
 
         File gradlew = new File(dir, "gradlew");
         assertTrue(gradlew.canExecute());
@@ -82,6 +82,10 @@ class ZipArchiveOutputStreamTests {
 
         System.out.println(String.format("Executing 'ls -l %s'", outputDir));
         print("ls", "-l", outputDir);
+
+        System.out.println(String.format("Executing '%s/gradlew.sh --version'", outputDir));
+        print(outputDir + "/gradlew.sh", "--version");
+
         System.out.println(String.format("Executing 'bash %s/gradlew.sh --version'", outputDir));
         print("bash", outputDir + "/gradlew.sh", "--version");
     }
