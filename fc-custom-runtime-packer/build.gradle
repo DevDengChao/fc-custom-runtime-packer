@@ -9,7 +9,7 @@ plugins {
 }
 
 group 'dev.dengchao'
-version "0.0.3"
+version "${VERSION}"
 
 repositories {
     maven { url "https://maven.aliyun.com/repository/central" }
