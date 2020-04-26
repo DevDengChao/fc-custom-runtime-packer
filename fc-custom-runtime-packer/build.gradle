@@ -76,4 +76,6 @@ publishing {
 }
 //endregion
 
-tasks.findByName("publishToMavenLocal").dependsOn('test')
+tasks.findByName("publishToMavenLocal").dependsOn('test').doLast {
+    exec { commandLine "./integrate-test.sh" }
+}
