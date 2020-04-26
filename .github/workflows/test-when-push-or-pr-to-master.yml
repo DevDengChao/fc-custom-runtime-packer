@@ -22,8 +22,7 @@ jobs:
         run: chmod +x gradlew
       - name: Publish fc-custom-runtime-packer to local maven repository
         run: ./gradlew :fc-custom-runtime-packer:publishToMavenLocal
-      - name: "Append 'include: demo' into settings.gradle"
-        run: |
-          echo 'include: demo' >> settings.gradle
+      - name: "Append 'include demo' into settings.gradle"
+        run: echo 'include demo' >> settings.gradle
       - name: Integrate test
         run: ./gradlew :demo:zipBootstrap
