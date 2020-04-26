@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-I'm using version x.y.z
+I'm using plugin version x.y.z, gradle version x.y.z. 
 
 ### There is no similar issues:
 
