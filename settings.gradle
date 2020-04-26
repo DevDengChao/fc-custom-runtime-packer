@@ -1,3 +1,5 @@
 rootProject.name = 'fc-custom-runtime-packer'
 include 'fc-custom-runtime-packer'
-include 'demo'
+
+// Uncomment below to perform manually integrate test on demo module
+//include 'demo'

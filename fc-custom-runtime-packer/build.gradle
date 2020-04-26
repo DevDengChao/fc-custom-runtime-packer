@@ -75,3 +75,5 @@ publishing {
     }
 }
 //endregion
+
+tasks.findByName("publishToMavenLocal").dependsOn('test')
