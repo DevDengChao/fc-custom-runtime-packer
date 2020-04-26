@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/XieEDeHeiShou/fc-custom-runtime-packer/workflows/Build/badge.svg)](https://github.com/XieEDeHeiShou/fc-custom-runtime-packer/actions)
+
 # Fc custom runtime packer
 
 This is a gradle plugin used to automatically compress your bootJar with a bootstrap file into a zip.
