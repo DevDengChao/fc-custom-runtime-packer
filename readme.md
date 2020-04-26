@@ -89,12 +89,8 @@ More additionally, you can run `gradle :zipBootstrapDefault` to package default 
 
 Please PR to master branch.
 
-If you want to perform integrate test on `demo` module with your modifications, you will need to:
-
-0. Update `VERSION` in `gradle.properties` to avoid applying plugin from gradle plugin repository.
-0. Run `gradle :fc-custom-runtime-packer:publishToMavenLocal` to publish plugin binary to local maven repository.
-0. Uncomment `include: demo` in `settings.gradle`
-0. Run `gradle :demo:zipBootstrap --info` to perform integrate test.
+If you want to perform integrate test on `demo` module with your modifications, 
+just run `gradle :fc-custom-runtime-packer:publishToMavenLocal`.
 
 # LICENSE
 
