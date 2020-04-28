@@ -36,12 +36,12 @@ Let's assume you have a spring project like below:
 ```
 project dir
 +--- bootstrap
-|   +--- bootstrap-pro  (1)
-|   \--- dev                        (2)
+|       +--- bootstrap-pro  (1)
+|       \--- dev                        (2)
 +--- build
 +--- src
-+--- bootstrap.sh         (3)
-+--- build.gradle          (plugin applyed)
++--- bootstrap.sh             (3)
++--- build.gradle              (plugin applyed)
 ```
 
 After run `gradle :zipBootstrap`, there will be a regular bootJar, three profile-ed bootstrap zip:
@@ -49,17 +49,17 @@ After run `gradle :zipBootstrap`, there will be a regular bootJar, three profile
 project dir
 +...
 +--- build
-|   \--- libs
-|       +--- demo-1.0.0.jar                 (bootJar)
-|       +--- demo-1.0.0-default.zip
-|       |   +--- bootstrap                       (generated from 3) 
-|       |   \--- demo-1.0.0.jar
-|       +--- demo-1.0.0-dev.zip
-|       |   +--- bootstrap                       (generated from 2) 
-|       |   \--- demo-1.0.0.jar
-|       \--- demo-1.0.0-pro.zip
-|           +--- bootstrap                       (generated from 1) 
-|           \--- demo-1.0.0.jar
+|       \--- libs
+|               +--- demo-1.0.0.jar                     (bootJar)
+|               +--- demo-1.0.0-default.zip
+|               |       +--- bootstrap                       (generated from 3) 
+|               |       \--- demo-1.0.0.jar
+|               +--- demo-1.0.0-dev.zip
+|               |       +--- bootstrap                       (generated from 2) 
+|               |       \--- demo-1.0.0.jar
+|               \--- demo-1.0.0-pro.zip
+|                       +--- bootstrap                       (generated from 1) 
+|                       \--- demo-1.0.0.jar
 +...
 ``` 
 More additionally, you can run `gradle :zipBootstrapDefault` to package default profile only, so does other profiles.
