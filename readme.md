@@ -1,4 +1,5 @@
 [![Actions Status](https://github.com/XieEDeHeiShou/fc-custom-runtime-packer/workflows/Build/badge.svg)](https://github.com/XieEDeHeiShou/fc-custom-runtime-packer/actions)
+[![Gradle Status](https://gradleupdate.appspot.com/XieEDeHeiShou/fc-custom-runtime-packer/status.svg)](https://gradleupdate.appspot.com/XieEDeHeiShou/fc-custom-runtime-packer/status)
 
 # Fc custom runtime packer
 
