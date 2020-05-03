@@ -17,7 +17,7 @@ buildscript {
     maven { url "https://plugins.gradle.org/m2/" }
   }
   dependencies {
-    classpath "gradle.plugin.dev.dengchao:plugin:x.y.z" // replace x.y.z with actual version of this plugin
+    classpath "dev.dengchao:fc-custom-runtime-packer:x.y.z" // replace x.y.z with actual version of this plugin
   }
 }
 
