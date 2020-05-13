@@ -63,7 +63,10 @@ public class ZipBootstrap extends DefaultTask {
         }
 
         output = new File(dir, bootJarArchive.getName().replaceFirst("\\.jar", "-" + profile + "\\.zip"));
-
+        if (output.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            output.delete();// Make sure the output file is re-generated each time
+        }
         return output;
     }
 
