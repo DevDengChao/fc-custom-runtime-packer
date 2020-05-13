@@ -7,7 +7,11 @@ echo "include 'demo'" >> settings.gradle
 ./gradlew :demo:zipBootstrap
 
 cd fc-custom-runtime-packer
-./verify-zip-bootstrap.sh
+
+echo
+
+./verify-zip-bootstrap-valid.sh
+./verify-zip-bootstrap-action-triggered.sh
 
 cd ..
 # remain the first two line
