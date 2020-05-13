@@ -78,4 +78,9 @@ publishing {
 
 tasks.findByName("publishToMavenLocal").dependsOn('test').doLast {
     exec { commandLine "./integrate-test.sh" }
+    def signal = file("./verify-zip-bootstrap-action-triggered-failed")
+    if (signal.exists()) {
+        signal.delete()
+        throw new RuntimeException("Verify zipBootstrap action triggered failed")
+    }
 }
