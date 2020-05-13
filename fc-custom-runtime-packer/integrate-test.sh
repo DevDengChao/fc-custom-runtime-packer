@@ -8,6 +8,8 @@ echo "include 'demo'" >> settings.gradle
 
 cd fc-custom-runtime-packer
 
+echo
+
 ./verify-zip-bootstrap-valid.sh
 ./verify-zip-bootstrap-action-triggered.sh
 
