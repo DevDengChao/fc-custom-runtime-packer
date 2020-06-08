@@ -55,12 +55,7 @@ public class FcCustomRuntimePackerPlugin implements Plugin<Project> {
         for (Map.Entry<String, File> entry : entries) {
             String profile = entry.getKey();
 
-            char c = profile.charAt(0);
-            if (c > 'a' && c < 'z') {
-                c += 'A' - 'a';
-            }
-
-            String name = "zipBootstrap" + c + profile.substring(1);
+            String name = "zipBootstrap" + camelCase(profile);
             tasks.create(name, ZipBootstrap.class, it -> {
                 it.getLogger().info("Configuring " + it.getName());
                 it.setGroup(BasePlugin.BUILD_GROUP);
@@ -72,5 +67,21 @@ public class FcCustomRuntimePackerPlugin implements Plugin<Project> {
             });
             zipBootstrap.dependsOn(name);
         }
+    }
+
+    @NotNull
+    static String camelCase(@NotNull String profile) {
+        String[] parts = profile.split("-");
+        StringBuilder suffix = new StringBuilder();
+        for (int i = 0; i < parts.length; i++) {
+            String part = parts[i];
+            char c = part.charAt(0);
+            if (c > 'a' && c < 'z') {
+                c += 'A' - 'a';
+            }
+            parts[i] = c + parts[i].substring(1);
+            suffix.append(parts[i]);
+        }
+        return suffix.toString();
     }
 }
