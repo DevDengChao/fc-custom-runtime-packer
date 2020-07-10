@@ -1,6 +1,6 @@
-[![Actions Status](https://github.com/XieEDeHeiShou/fc-custom-runtime-packer/workflows/Build/badge.svg)](https://github.com/XieEDeHeiShou/fc-custom-runtime-packer/actions)
-[![Gradle Status](https://gradleupdate.appspot.com/XieEDeHeiShou/fc-custom-runtime-packer/status.svg)](https://gradleupdate.appspot.com/XieEDeHeiShou/fc-custom-runtime-packer/status)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/xieedeheishou/fc-custom-runtime-packer)
+[![Actions Status](https://github.com/DevDengChao/fc-custom-runtime-packer/workflows/Build/badge.svg)](https://github.com/DevDengChao/fc-custom-runtime-packer/actions)
+[![Gradle Status](https://gradleupdate.appspot.com/DevDengChao/fc-custom-runtime-packer/status.svg)](https://gradleupdate.appspot.com/DevDengChao/fc-custom-runtime-packer/status)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/DevDengChao/fc-custom-runtime-packer)](https://github.com/DevDengChao/fc-custom-runtime-packer/releases)
 
 # Fc custom runtime packer
 
