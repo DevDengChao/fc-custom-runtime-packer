@@ -3,6 +3,12 @@
 [![Gradle Status](https://gradleupdate.appspot.com/DevDengChao/fc-custom-runtime-packer/status.svg)](https://gradleupdate.appspot.com/DevDengChao/fc-custom-runtime-packer/status)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/DevDengChao/fc-custom-runtime-packer)](https://github.com/DevDengChao/fc-custom-runtime-packer/releases)
 
+# DEPRECATED
+
+As Alibaba/Aliyun Function Compute updated a lot of features since I implemented the first version of this gradle plugin, such as [definding bootstrap command inside s.yaml template file](https://github.com/devsapp/fc/blob/main/docs/zh/yaml/function.md#customRuntimeConfig) and [extend template files](https://github.com/Serverless-Devs/Serverless-Devs/blob/master/docs/zh/extend.md), this plugin is eventually become outdated.
+
+So, there will be no more update. Please migrate to the offical cli tool maintained by Alibaba/Aliyun team: [@serverless-devs/s](https://github.com/Serverless-Devs/Serverless-Devs).
+
 # Fc custom runtime packer
 
 This is a gradle plugin used to automatically compress your bootJar with a bootstrap file into a zip.
